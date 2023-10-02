@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\
@@ -23,3 +23,9 @@ Route::post('/user/register',[userController::class,'register']);
 Route::post('/user/login',[userController::class,'login']);
 
 Route::get('/user/getUser/{id}',[userController::class,'getUser']);
+
+Route::post('/task/create',[TasksController::class,'create']);
+
+Route::get('/tasks',[TasksController::class,'index']);
+
+Route::delete('/task/delete/{id}',[TasksController::class,'destroy']);
