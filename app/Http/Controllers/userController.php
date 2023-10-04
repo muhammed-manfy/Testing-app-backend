@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\APIs;
+namespace App\Http\Controllers;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -74,7 +74,7 @@ class userController extends Controller
                return response()->json([
                     'message' => "Invalid email",
                     'status' => false
-                ],404);
+                ],402);
         }
     }
 
@@ -87,7 +87,7 @@ class userController extends Controller
         }catch(Exception $error){
             return response()->json([
                 'message' => $error->message
-            ],504);
+            ],500);
         }
     }
 }

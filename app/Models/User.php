@@ -12,9 +12,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $table = users;
-
-    protected $primaryKey = id;
 
     protected $fillable = [
         'name',
@@ -40,7 +37,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function tasks(){
-        
+
         return $this->hasMany(Task::class);
     }
 }

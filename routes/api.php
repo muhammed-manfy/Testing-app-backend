@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-// use Illuminate\Support\Facades\
+use App\Http\Middleware\UserTask;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,18 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::post('/user/register',[userController::class,'register']);
 
 Route::post('/user/login',[userController::class,'login']);
 
 Route::get('/user/getUser/{id}',[userController::class,'getUser']);
 
-Route::post('/task/create',[TasksController::class,'create']);
+Route::group(['middleware' => 'UserCheck'], function(){
 
-Route::get('/tasks',[TasksController::class,'index']);
+    Route::get('/task/userTasks/{user_id}', [TasksController::class,'getUserTasks']);
 
-Route::delete('/task/delete/{id}',[TasksController::class,'destroy']);
+    Route::delete('/task/deleteTask/{id}',[TasksController::class,'deleteTask']);
+
+    Route::post('/task/createTask',[TasksController::class,'createTask']);
+
+    Route::put('/task/updateTask/{id}',[TasksController::class,'updateTask']);
+
+    Route::get('/task/getTask/{id}',[TasksController::class,'getTask']);
+
+});
+

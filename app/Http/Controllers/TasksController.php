@@ -6,33 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Task;
-
+use App\Models\User;
 class TasksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(){
-        try{
-            $tasks =Task::all();
-                return response()->json([
-                    'data'=>$tasks
-                ],200);
-        }catch(Exception $error){
-            return response()->json([
-            'message' => $error->message
-            ]  , 501);
-        }
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request){
+  
+    public function createTask(Request $request){
+
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
             'title' => 'required',
@@ -60,35 +40,28 @@ class TasksController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function getUserTasks($user_id)
+
     {
-        //
+        try{
+
+            $userTasks = Task::all()->where('user_id',$user_id);
+
+                return response()->json([
+                    'data'=>$userTasks,
+                ], 200);
+
+        }catch(Exception $error){
+            return response()->json([
+                'message'=> $error->message
+            ]);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request , $id)
+    public function updateTask(Request $request , $id)
     {
         $task = Task::find($id);
 
@@ -99,7 +72,7 @@ class TasksController extends Controller
         try{
             $task -> save();
                 return response()->json([
-                    'message'=>"Task Update Successfully!"
+                    'message'=>"Task Updated Successfully!"
                 ], 200 );
         }catch(Exception $error){
 
@@ -111,25 +84,24 @@ class TasksController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function getTask($id)
     {
-        //
+        try{
+
+            $task = Task::find($id);
+            return response()->json([
+                'data'=> $task
+            ] , 200);
+
+        }catch(Exception $error){
+            return response()->json([
+                'message'=> $error->message
+            ] , 500);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function deleteTask($id)
     {
         $task = Task::find($id);
         try{
